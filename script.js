@@ -490,6 +490,8 @@ const device = {
 // Bruce API: keyboard
 const _kbKeys = { next: false, prev: false, sel: false, esc: false };
 document.addEventListener('keydown', (e) => {
+    // Don't capture keys when editing code in the textarea
+    if (document.activeElement && document.activeElement.id === 'code') return;
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { _kbKeys.next = true; e.preventDefault(); }
     if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { _kbKeys.prev = true; e.preventDefault(); }
     if (e.key === 'Enter') { _kbKeys.sel = true; e.preventDefault(); }
@@ -647,16 +649,23 @@ function transpileCppToJs(code) {
     return jsCode;
 }
     
-// Auto-execute on code change
+// Auto-execute on code change — disabled while textarea is focused to avoid
+// interrupting edits with game execution
 let timeout;
 codeEditor.addEventListener('input', () => {
     clearTimeout(timeout);
+    if (document.activeElement && document.activeElement.id === 'code') return;
     timeout = setTimeout(executeCode, 800);
 });
     
 async function executeCode() {
     try {
         executionStopped = false;
+        // Clear any stale keyboard state (e.g. from editing the textarea)
+        _kbKeys.next = false;
+        _kbKeys.prev = false;
+        _kbKeys.sel = false;
+        _kbKeys.esc = false;
         runBtn.style.display = 'none';
         stopBtn.style.display = 'inline-block';
         statusDiv.textContent = '▶ Running...';
