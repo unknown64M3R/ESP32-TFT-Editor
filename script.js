@@ -653,6 +653,7 @@ function transpileCppToJs(code) {
 // interrupting edits with game execution
 let timeout;
 codeEditor.addEventListener('input', () => {
+    localStorage.setItem('bruce_editor_code', codeEditor.value);
     clearTimeout(timeout);
     if (document.activeElement && document.activeElement.id === 'code') return;
     timeout = setTimeout(executeCode, 800);
@@ -711,11 +712,18 @@ function clearDisplay() {
 }
     
 function loadExample() {
-    updateExampleCode();
+    codeEditor.value = defaultCode;
+    localStorage.setItem('bruce_editor_code', defaultCode);
+    executeCode();
 }
     
 function loadDefaultCode() {
-    codeEditor.value = defaultCode;
+    const saved = localStorage.getItem('bruce_editor_code');
+    if (saved) {
+        codeEditor.value = saved;
+    } else {
+        codeEditor.value = defaultCode;
+    }
 }
 
 function updateExampleCode() {
