@@ -560,9 +560,8 @@ function transpileCppToJs(code) {
     // Replace char arrays with let
     jsCode = jsCode.replace(/\bchar\s+(\w+)\[.*?\]/g, 'let $1');
         
-    // Replace sprintf with template literals (simplified)
-    jsCode = jsCode.replace(/sprintf\s*\(\s*(\w+)\s*,\s*"(.+?)"\s*,\s*(.+?)\s*\)/g, (match, var1, format, args) => {
-        // Simple sprintf replacement
+    // Replace sprintf with template literals (simple cases only — no nested parens)
+    jsCode = jsCode.replace(/sprintf\s*\(\s*(\w+)\s*,\s*"(.+?)"\s*,\s*([^()]+)\s*\)/g, (match, var1, format, args) => {
         let replacement = format;
         const argList = args.split(',').map(a => a.trim());
         let argIndex = 0;
