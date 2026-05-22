@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TFT Display Editor - 320x160</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="left-panel">
+        <h1>📝 C++ Code Editor</h1>
+        <textarea id="code" spellcheck="false"></textarea>
+        
+        <div class="toolbar">
+            <button id="runBtn" onclick="executeCode()">▶ Run Code</button>
+            <button id="stopBtn" class="stop" onclick="stopExecution()" style="display:none">⬛ Stop</button>
+            <button onclick="clearDisplay()">🗑 Clear Display</button>
+            <button onclick="loadExample()">📋 Load Example</button>
+            <button onclick="selectSaveDir()" id="saveDirBtn">📁 Save Dir</button>
+            <label style="margin-left: 20px; color: #608b4e;">
+                <input type="checkbox" id="bruceMode" onchange="updateExampleCode()" style="margin-right: 5px;" checked disabled>
+                Use Bruce API (display)
+            </label>
+            <span class="status" id="status"></span>
+        </div>
+        
+        <div id="error" class="error"></div>
+    </div>
+    
+    <div class="right-panel">
+        <h1>📺 TFT Display Preview</h1>
+        <canvas id="canvas" width="320" height="160"></canvas>
+        <div class="display-info">
+            <span id="displaySize">320 x 160 pixels</span> | ESP32 TFT Simulation
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="sizeSelect" style="color: #608b4e; margin-right: 10px;">Display Size:</label>
+            <select id="sizeSelect" onchange="changeDisplaySize()" style="background: #252526; color: #d4d4d4; border: 1px solid #3e3e42; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                <option value="320x160" selected>320 x 160 (ST7789 1.9")</option>
+                <option value="240x135">240 x 135 (M5 Cardputer/Stick - ST7789 1.14")</option>
+                <option value="320x170">320 x 170 (Lilygo T-Embed - ST7789 1.9")</option>
+                <option value="240x240">240 x 240 (ST7789 1.3" Square)</option>
+                <option value="240x320">240 x 320 (ILI9341 2.4")</option>
+                <option value="320x240">320 x 240 (ILI9341 2.8" Landscape)</option>
+                <option value="480x320">480 x 320 (ILI9486 3.5")</option>
+                <option value="480x222">480 x 222 (Lilygo T-LoRa Pager - ST7796 2.33")</option>
+                <option value="128x160">128 x 160 (ST7735 1.8")</option>
+                <option value="128x128">128 x 128 (ST7735 1.44" Square)</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="DungeonRealms.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
